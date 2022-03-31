@@ -3,18 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { PostEntity } from './entities/post.entity';
-import { Post } from './interfaces/post.interface';
+import { Post } from './entities/post.entity';
 
 @Injectable()
 export class PostsService {
   constructor(
-    @InjectRepository(PostEntity)
-    private postsRepository: Repository<PostEntity>,
+    @InjectRepository(Post)
+    private postsRepository: Repository<Post>,
   ) {}
-
-  private lastPostId = 0;
-  private posts: Post[] = [];
 
   getAllPosts() {
     return this.postsRepository.find({});
@@ -48,25 +44,5 @@ export class PostsService {
     if (!deleteResponse.affected) {
       throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
     }
-  }
-
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
-  }
-
-  findAll() {
-    return `This action returns all posts`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
-  }
-
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} post`;
   }
 }
