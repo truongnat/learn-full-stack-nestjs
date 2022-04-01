@@ -1,9 +1,18 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Post } from 'src/posts/entities/post.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Address } from './address.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  public id?: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id?: string;
 
   @Column({ unique: true })
   public email: string;
@@ -13,4 +22,14 @@ export class User {
 
   @Column()
   public password: string;
+
+  @OneToOne(() => Address, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn()
+  public address: Address;
+
+  @OneToMany(() => Post, (post: Post) => post.author)
+  public posts: Post[];
 }
