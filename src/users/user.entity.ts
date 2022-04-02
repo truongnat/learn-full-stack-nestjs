@@ -1,3 +1,5 @@
+import { PrivateFile } from 'src/files/privateFile.entity';
+import { PublicFile } from 'src/files/publicFile.entity';
 import { Post } from 'src/posts/entities/post.entity';
 import {
   Column,
@@ -23,6 +25,13 @@ export class User {
   @Column()
   public password: string;
 
+  @JoinColumn()
+  @OneToOne(() => PublicFile, {
+    eager: true,
+    nullable: true,
+  })
+  public avatar?: PublicFile;
+
   @OneToOne(() => Address, {
     eager: true,
     cascade: true,
@@ -32,4 +41,7 @@ export class User {
 
   @OneToMany(() => Post, (post: Post) => post.author)
   public posts: Post[];
+
+  @OneToMany(() => PrivateFile, (file: PrivateFile) => file.owner)
+  public files: PrivateFile[];
 }

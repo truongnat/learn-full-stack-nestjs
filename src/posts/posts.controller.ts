@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -32,7 +33,10 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
+  async getPosts(@Query('search') search: string) {
+    if (search) {
+      return this.postsService.searchForPosts(search);
+    }
     return this.postsService.getAllPosts();
   }
 }
