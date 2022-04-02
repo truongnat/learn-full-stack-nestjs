@@ -28,6 +28,7 @@
     "@nestjs/elasticsearch": "^8.1.0",
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^8.4.3",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.1.1",
     "@nestjs/typeorm": "^8.0.3",

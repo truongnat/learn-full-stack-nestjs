@@ -8,6 +8,7 @@ import { DatabaseModule } from './database.module';
 import { APP_FILTER } from '@nestjs/core';
 import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
 
 @Module({
   imports: [
@@ -32,11 +33,14 @@ import { AuthenticationModule } from './authentication/authentication.module';
         ELASTICSEARCH_NODE: Joi.string().required(),
         ELASTICSEARCH_USERNAME: Joi.string().required(),
         ELASTICSEARCH_PASSWORD: Joi.string().required(),
+        SUBSCRIBERS_SERVICE_HOST: Joi.string().required(),
+        SUBSCRIBERS_SERVICE_PORT: Joi.string().required(),
       }),
     }),
     DatabaseModule,
     AuthenticationModule,
     PostsModule,
+    SubscribersModule,
   ],
   controllers: [AppController],
   providers: [
