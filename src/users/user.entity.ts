@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { PrivateFile } from 'src/files/privateFile.entity';
 import { PublicFile } from 'src/files/publicFile.entity';
 import { Post } from 'src/posts/entities/post.entity';
@@ -24,6 +25,12 @@ export class User {
 
   @Column()
   public password: string;
+
+  @Column({
+    nullable: true,
+  })
+  @Exclude()
+  public currentHashedRefreshToken?: string;
 
   @JoinColumn()
   @OneToOne(() => PublicFile, {
