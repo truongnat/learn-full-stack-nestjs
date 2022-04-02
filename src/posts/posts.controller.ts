@@ -13,6 +13,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { JwtAuthenticationGuard } from 'src/authentication/jwt-authentication.guard';
 import { FindOneParams } from 'src/utils/findOneParams';
 import { RequestWithUser } from 'src/authentication/requestWithUser.interface';
+import { PaginationParams } from 'src/utils/types/paginationParams';
 
 @Controller('posts')
 export class PostsController {
@@ -33,10 +34,13 @@ export class PostsController {
   }
 
   @Get()
-  async getPosts(@Query('search') search: string) {
+  async getPosts(
+    @Query('search') search: string,
+    @Query() { offset, limit }: PaginationParams,
+  ) {
     if (search) {
-      return this.postsService.searchForPosts(search);
+      return this.postsService.searchForPosts(search, offset, limit);
     }
-    return this.postsService.getAllPosts();
+    return this.postsService.getAllPosts(offset, limit);
   }
 }

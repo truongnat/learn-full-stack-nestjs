@@ -16,20 +16,27 @@ export default class PostsSearchService {
       body: {
         id: post.id,
         title: post.title,
-        content: post.content,
+        paragraphs: post.paragraphs,
         authorId: post.author.id,
       },
     });
   }
 
-  async search(text: string) {
+  async search(text: string, offset?: number, limit?: number) {
     const response = await this.elasticsearchService.search<PostSearchResult>({
       index: this.index,
+      from: offset,
+      size: limit,
       body: {
         query: {
           multi_match: {
             query: text,
-            fields: ['title', 'content'],
+            fields: ['title', 'paragraphs'],
+          },
+        },
+        sort: {
+          id: {
+            order: 'asc',
           },
         },
       },
@@ -59,7 +66,7 @@ export default class PostsSearchService {
     const newBody: PostSearchBody = {
       id: post.id,
       title: post.title,
-      content: post.content,
+      paragraphs: post.paragraphs,
       authorId: post.author.id,
     };
 

@@ -1,6 +1,6 @@
 export interface PostSearchBody {
   id: string;
   title: string;
-  content: string;
+  paragraphs: string[];
   authorId: string;
 }

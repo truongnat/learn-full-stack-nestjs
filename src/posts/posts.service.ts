@@ -16,8 +16,20 @@ export class PostsService {
     private postsSearchService: PostsSearchService,
   ) {}
 
-  getAllPosts() {
-    return this.postsRepository.find({ relations: ['author'] });
+  async getAllPosts(offset?: number, limit?: number) {
+    const [items, count] = await this.postsRepository.findAndCount({
+      relations: ['author'],
+      order: {
+        id: 'ASC',
+      },
+      skip: offset,
+      take: limit,
+    });
+
+    return {
+      items,
+      count,
+    };
   }
 
   async getPostById(id: string) {
@@ -62,9 +74,8 @@ export class PostsService {
     await this.postsSearchService.remove(id);
   }
 
-  async searchForPosts(text: string) {
+  async searchForPosts(text: string, offset?: number, limit?: number) {
     const results = await this.postsSearchService.search(text);
-    console.log('logging :', results);
 
     const ids = results.map((result: { id: any }) => result.id);
     if (!ids.length) {
@@ -73,5 +84,12 @@ export class PostsService {
     return this.postsRepository.find({
       where: { id: In(ids) },
     });
+  }
+
+  async getPostsWithParagraph(paragraph: string) {
+    return this.postsRepository.query(
+      'SELECT * from post WHERE $1 = ANY(paragraphs)',
+      [paragraph],
+    );
   }
 }
