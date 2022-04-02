@@ -11,10 +11,17 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       provide: 'SUBSCRIBERS_SERVICE',
       useFactory: (configService: ConfigService) =>
         ClientProxyFactory.create({
-          transport: Transport.TCP,
+          transport: Transport.RMQ,
           options: {
-            host: configService.get('SUBSCRIBERS_SERVICE_HOST'),
-            port: configService.get('SUBSCRIBERS_SERVICE_PORT'),
+            urls: [
+              `amqp://${configService.get('RABBITMQ_USER')}:${configService.get(
+                'RABBITMQ_PASSWORD',
+              )}@${configService.get('RABBITMQ_HOST')}`,
+            ],
+            queue: configService.get('RABBITMQ_QUEUE_NAME'),
+            queueOptions: {
+              durable: true,
+            },
           },
         }),
       inject: [ConfigService],

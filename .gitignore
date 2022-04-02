@@ -399,3 +399,4 @@ dist
 
 docker.env
 yarn.lock
+rabbitmq.env
