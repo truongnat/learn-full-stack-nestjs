@@ -9,6 +9,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { SubscribersModule } from './subscribers/subscribers.module';
     AuthenticationModule,
     PostsModule,
     SubscribersModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [
